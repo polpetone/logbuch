@@ -16,8 +16,9 @@ class TaskService:
         #self.tasks = []
 
     def create_task(self, text):
-        task = Task(text, TaskStatus("OPEN", datetime.now().isoformat()), str(uuid.uuid4()), datetime.now().isoformat())
+        task = Task(text)
         self.tasks.append(task)
+        return task
 
     def get_tasks(self):
         return self.tasks

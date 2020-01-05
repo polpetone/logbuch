@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 import json
 
@@ -6,10 +7,14 @@ from src.domain.TaskStatus import TaskStatus
 
 class Task:
 
-    def __init__(self, text, status, uuid, date):
+    def __init__(self,
+                 text,
+                 status=TaskStatus(),
+                 uid=str(uuid.uuid4()),
+                 date=datetime.now().isoformat()):
         self.text = text
         self.status = status
-        self.uuid = uuid
+        self.uid = uid
         self.date = date
 
     def change_status(self, status):
