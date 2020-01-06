@@ -3,6 +3,7 @@ import json
 import jsonpickle
 
 from src.domain.Task import Task
+from src.portadapter.TasksView import TasksView
 from src.service.Tasks import Tasks
 
 task_repo_file_path = "data/task_repo_file.json"
@@ -31,3 +32,6 @@ class TaskService:
             tasks_json = task_repo_file.read()
         tasks = jsonpickle.decode(tasks_json).tasks
         return tasks
+
+    def get_tasks_view(self):
+        return TasksView(self.tasks)
