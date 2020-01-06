@@ -1,9 +1,8 @@
-import uuid
-from datetime import datetime
 import json
 
+import jsonpickle
+
 from src.domain.Task import Task
-from src.domain.TaskStatus import TaskStatus
 from src.service.Tasks import Tasks
 
 task_repo_file_path = "data/task_repo_file.json"
@@ -25,15 +24,10 @@ class TaskService:
 
     def save_tasks(self):
         with open(task_repo_file_path, 'w') as task_repo_file:
-            task_repo_file.write(Tasks(self.tasks).to_json())
+            task_repo_file.write(jsonpickle.encode(Tasks(self.tasks)))
 
     def load_tasks(self):
         with open(task_repo_file_path, 'r') as task_repo_file:
             tasks_json = task_repo_file.read()
-        t = json.loads(tasks_json)
-        tasks_object = Tasks(**t)
-        tasks = []
-        for tasks_object in tasks_object.tasks:
-            task = Task(**tasks_object)
-            tasks.append(task)
+        tasks = jsonpickle.decode(tasks_json).tasks
         return tasks

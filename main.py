@@ -16,10 +16,10 @@ def test0():
 def test1():
     task_service = TaskService()
     tasks = task_service.get_tasks()
-    template = "{0:<30}{1:<40}\n"
-    out = template.format("Date", "Text")
+    template = "{0:<30}{1:<40}{2:<20}\n"
+    out = template.format("Date", "Text", "Status")
     for task in tasks:
-        out += template.format(task.date, task.text)
+        out += template.format(task.date, task.text, task.status.status)
     return out
 
 

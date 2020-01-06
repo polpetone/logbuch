@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 
-class TaskStatus:
+class TaskStatus(object):
 
     def __init__(self, status="OPEN", date=datetime.now().isoformat()):
         self.status = status

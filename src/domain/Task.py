@@ -4,7 +4,7 @@ import json
 from src.domain.TaskStatus import TaskStatus
 
 
-class Task:
+class Task(object):
 
     def __init__(self,
                  text,

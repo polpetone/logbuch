@@ -1,7 +1,7 @@
 import json
 
 
-class Tasks:
+class Tasks(object):
 
     def __init__(self, tasks):
         self.tasks = tasks
