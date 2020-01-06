@@ -11,8 +11,29 @@ def logbuch():
     """Logbuch"""
 
 
+def print_simple_task_list():
+
+    task_list = task_service.get_tasks()
+    tasks_view = TasksView(task_list)
+
+    print(tasks_view.simple_table_view())
+
+
 @logbuch.command()
 def tasks():
-    task_list = task_service.get_tasks()
-    task_view = TasksView(task_list)
-    print(task_view.simple_table_view())
+    print_simple_task_list()
+
+
+@logbuch.command()
+@click.option("--nr", type=click.IntRange(0, 10), prompt="nr", help="Select a task by number")
+def task(nr):
+    click.echo("Selected {}".format(nr))
+
+
+
+@logbuch.command()
+@click.option("--text", prompt="Text", help="Text of the new Task")
+def add_task(text):
+    task_service.create_task(text)
+    task_service.save_tasks()
+    print_simple_task_list()
