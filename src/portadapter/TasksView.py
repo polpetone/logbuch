@@ -10,6 +10,12 @@ class TasksView(object):
             task_counter += 1
             self.task_views.append(TaskView(task, task_counter))
 
+    def get_task_view_by_number(self, number):
+        result = [x for x in self.task_views if x.select_number == number]
+        if len(result) > 0:
+            return result[0]
+        return None
+
     def simple_table_view(self):
         template = "{0:<5}{1:<30}{2:<40}{3:<20}\n"
         gap_template = "{0:<100}\n"

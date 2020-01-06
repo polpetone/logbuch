@@ -24,6 +24,10 @@ def tasks():
 @click.option("--nr", type=click.IntRange(0, 10), prompt="nr", help="Select a task by number")
 def task(nr):
     click.echo("Selected {}".format(nr))
+    tasks_view = task_service.get_tasks_view()
+    task_view = tasks_view.get_task_view_by_number(nr)
+    if task_view:
+        print(task_view.simple_view())
 
 
 @logbuch.command()
