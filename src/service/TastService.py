@@ -1,7 +1,6 @@
 import jsonpickle
 
 from src.domain.Task import Task
-from src.portadapter.TasksView import TasksView
 from src.service.Tasks import Tasks
 
 task_repo_file_path = "data/task_repo_file.json"
@@ -34,6 +33,3 @@ class TaskService:
         result = [x for x in self.tasks if x.status.status == status]
         return result
 
-    ## broken architecture, service should not know view
-    def get_tasks_view(self):
-        return TasksView(self.tasks)
