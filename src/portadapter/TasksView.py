@@ -25,14 +25,12 @@ class TasksView(object):
         for task_view in self.task_views:
             select_number += 1
             out += gap_template.format(
-                "----------------------------------------------------------------------------------")
+                "-----------------------------------------------------------------------------------------------------")
             out += template.format(task_view.select_number, task_view.date, task_view.text, task_view.status)
-            out += "\n"
             sub_task_select_number = 0
             for sub_task_view in task_view.sub_tasks:
                 sub_task_select_number += 1
                 out += sub_task_template.format("", sub_task_view.select_number, sub_task_view.date, sub_task_view.text,
                                                 sub_task_view.status)
-            out += "\n"
 
         return out

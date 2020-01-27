@@ -1,5 +1,3 @@
-import json
-
 import jsonpickle
 
 from src.domain.Task import Task
@@ -13,7 +11,6 @@ class TaskService:
 
     def __init__(self):
         self.tasks = self.load_tasks()
-        #self.tasks = []
 
     def create_task(self, text):
         task = Task(text)

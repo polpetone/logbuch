@@ -1,7 +1,6 @@
 import click
 
 from src.domain.Task import Task
-from src.portadapter.TasksView import TasksView
 from src.service.TastService import TaskService
 
 task_service = TaskService()
