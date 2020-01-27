@@ -1,10 +1,10 @@
 import click
 
 from src.domain.Task import Task
+from src.portadapter.TasksView import TasksView
 from src.service.TastService import TaskService
 
 task_service = TaskService()
-
 
 @click.group()
 def logbuch():
@@ -16,8 +16,14 @@ def print_simple_task_list():
 
 
 @logbuch.command()
-def tasks():
-    print_simple_task_list()
+@click.option("--status", help="OPEN, CANCELED, CLOSED")
+def tasks(status):
+    if status:
+        tasks = task_service.filter_tasks_by_status(status)
+    else:
+        tasks = task_service.get_tasks()
+    tasks_view = TasksView(tasks)
+    print(tasks_view.simple_table_view())
 
 
 @logbuch.command()

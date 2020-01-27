@@ -30,5 +30,10 @@ class TaskService:
         tasks = jsonpickle.decode(tasks_json).tasks
         return tasks
 
+    def filter_tasks_by_status(self, status):
+        result = [x for x in self.tasks if x.status.status == status]
+        return result
+
+    ## broken architecture, service should not know view
     def get_tasks_view(self):
         return TasksView(self.tasks)
