@@ -53,3 +53,23 @@ def add_sub_task(nr, text):
         click.echo("No Task found with number {}".format(nr))
 
 
+@logbuch.command()
+@click.option("--task-nr", type=click.IntRange(0, 20), prompt="task nr", help="Select a task by number")
+@click.option("--sub-task-nr", type=click.IntRange(0, 20), prompt="sub task nr", help="Select a task by number")
+@click.option("--status", prompt="status", help="OPEN, CANCELED, CLOSED")
+def change_status(task_nr, sub_task_nr, status):
+    tasks_view = task_service.get_tasks_view()
+    task_view = tasks_view.get_task_view_by_number(task_nr)
+    if task_view:
+        sub_task_view = task_view.get_sub_task_view_by_number(sub_task_nr)
+        if sub_task_view:
+            sub_task_view.task.change_status(status)
+            task_service.save_tasks()
+        else:
+            task_view.task.change_status(status)
+            task_service.save_tasks()
+    else:
+        click.echo("No Task found with number {}".format(task_nr))
+
+
+

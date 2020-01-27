@@ -15,6 +15,12 @@ class TaskView(object):
             sub_task_counter += 1
             self.sub_tasks.append(TaskView(sub_task, sub_task_counter))
 
+    def get_sub_task_view_by_number(self, number):
+        result = [x for x in self.sub_tasks if x.select_number == number]
+        if len(result) > 0:
+            return result[0]
+        return None
+
     def simple_view(self):
         template = "{0:<30}{1:<40}{2:<20}\n"
         out = template.format("Date", "Text", "Status")
