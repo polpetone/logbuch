@@ -9,6 +9,7 @@ class TaskView(object):
         self.date = datetime.fromisoformat(task.date).strftime("%d-%m-%Y %H:%M:%S")
         self.text = task.text
         self.status = task.status.status
+        self.status_date = datetime.fromisoformat(task.status.date).strftime("%d-%m-%Y %H:%M:%S")
         self.sub_tasks = []
         sub_task_counter = 0
         for sub_task in task.sub_tasks:
