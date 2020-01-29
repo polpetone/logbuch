@@ -10,14 +10,14 @@ class TaskView(object):
         self.text = task.text
         self.status = task.status.status
         self.status_date = datetime.fromisoformat(task.status.date).strftime("%d-%m-%Y %H:%M:%S")
-        self.sub_tasks = []
+        self.sub_task_views = []
         sub_task_counter = 0
         for sub_task in task.sub_tasks:
             sub_task_counter += 1
-            self.sub_tasks.append(TaskView(sub_task, sub_task_counter))
+            self.sub_task_views.append(TaskView(sub_task, sub_task_counter))
 
     def get_sub_task_view_by_number(self, number):
-        result = [x for x in self.sub_tasks if x.select_number == number]
+        result = [x for x in self.sub_task_views if x.select_number == number]
         if len(result) > 0:
             return result[0]
         return None
@@ -28,7 +28,7 @@ class TaskView(object):
         out = template.format("uid", "Date", "Text", "Status", "Status Date")
         out += template.format(self.task.uid, self.date, self.text, self.status, self.status_date)
 
-        for sub_task_view in self.sub_tasks:
+        for sub_task_view in self.sub_task_views:
                 out += sub_task_template.format("",
                                                 sub_task_view.task.uid,
                                                 sub_task_view.date,

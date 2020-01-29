@@ -36,7 +36,7 @@ class TasksView(object):
                                    task_view.status,
                                    task_view.status_date)
             sub_task_select_number = 0
-            for sub_task_view in task_view.sub_tasks:
+            for sub_task_view in task_view.sub_task_views:
                 sub_task_select_number += 1
                 out += sub_task_template.format("",
                                                 sub_task_view.task.uid,
