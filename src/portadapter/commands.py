@@ -54,19 +54,15 @@ def add_task(text):
 
 
 @logbuch.command()
-@click.option("--nr", type=click.IntRange(0, 20), prompt="nr", help="Select a task by number")
-@click.option("--text", prompt="Text", help="Text of the new Task")
-def add_sub_task(nr, text):
-    tasks = task_service.get_tasks()
-    tasks_view = TasksView(tasks)
-    task_view = tasks_view.get_task_view_by_number(nr)
-    if task_view:
+@click.option("--uid", prompt="task id", help="Task id to add sub task for")
+@click.option("--text", prompt="Text", help="Text of the new sub task")
+def add_sub_task(uid, text):
+    task = task_service.get_task_by_id(uid)
+    if task:
         sub_task = Task(text)
-        task_view.task.add_sub_task(sub_task)
+        task.add_sub_task(sub_task)
         task_service.save_tasks()
-        tasks = task_service.get_tasks()
-        tasks_view = TasksView(tasks)
-        click.echo(tasks_view.simple_table_view())
+        click.echo("Sub Task added for {}".format(uid))
     else:
         click.echo("No Task found with number {}".format(nr))
 
