@@ -34,6 +34,14 @@ def task(uid):
     else:
         click.echo("No Task found with uid {}".format(uid))
 
+@logbuch.command()
+@click.option("--uid", prompt="task id", help="Task id for task to get deleted")
+def delete_task(uid):
+    task = task_service.delete_task_by_id(uid)
+    if task:
+        click.echo("Task {} deleted".format(task.uid))
+    else:
+        click.echo("No Task found with uid {}".format(uid))
 
 @logbuch.command()
 @click.option("--text", prompt="Text", help="Text of the new Task")

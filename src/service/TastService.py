@@ -42,6 +42,23 @@ class TaskService:
             for task in self.tasks:
                 result = [x for x in task.sub_tasks if x.uid == uid]
                 if len(result) == 1:
-                   found_task = result[0]
+                    found_task = result[0]
+                    break
         return found_task
 
+    def delete_task_by_id(self, uid):
+        found_task = None
+        result = [x for x in self.tasks if x.uid == uid]
+        if len(result) == 1:
+            found_task = result[0]
+            self.tasks.remove(found_task)
+            self.save_tasks()
+        else:
+            for task in self.tasks:
+                result = [x for x in task.sub_tasks if x.uid == uid]
+                if len(result) == 1:
+                    found_task = result[0]
+                    task.sub_tasks.remove(found_task)
+                    self.save_tasks()
+                    break
+        return found_task
