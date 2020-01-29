@@ -21,7 +21,7 @@ def tasks(status):
     else:
         tasks = task_service.get_tasks()
     tasks_view = TasksView(tasks)
-    print(tasks_view.simple_table_view())
+    click.echo(tasks_view.simple_table_view())
 
 
 @logbuch.command()
@@ -50,7 +50,7 @@ def add_task(text):
     task_service.save_tasks()
     tasks = task_service.get_tasks()
     tasks_view = TasksView(tasks)
-    print(tasks_view.simple_table_view())
+    click.echo(tasks_view.simple_table_view())
 
 
 @logbuch.command()
@@ -66,7 +66,7 @@ def add_sub_task(nr, text):
         task_service.save_tasks()
         tasks = task_service.get_tasks()
         tasks_view = TasksView(tasks)
-        print(tasks_view.simple_table_view())
+        click.echo(tasks_view.simple_table_view())
     else:
         click.echo("No Task found with number {}".format(nr))
 
