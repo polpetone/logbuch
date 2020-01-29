@@ -1,8 +1,10 @@
 import click
 
 from src.domain.Task import Task
-from src.portadapter.TaskView import TaskView
-from src.portadapter.TasksView import TasksView
+from src.portadapter.input.migration.domain.LogFileService import LogFileService
+from src.portadapter.input.migration.log_file_parser import LogFileParser
+from src.portadapter.out.TaskView import TaskView
+from src.portadapter.out.TasksView import TasksView
 from src.service.TastService import TaskService
 
 task_service = TaskService()
@@ -34,6 +36,7 @@ def task(uid):
     else:
         click.echo("No Task found with uid {}".format(uid))
 
+
 @logbuch.command()
 @click.option("--uid", prompt="task id", help="Task id for task to get deleted")
 def delete_task(uid):
@@ -42,6 +45,7 @@ def delete_task(uid):
         click.echo("Task {} deleted".format(task.uid))
     else:
         click.echo("No Task found with uid {}".format(uid))
+
 
 @logbuch.command()
 @click.option("--text", prompt="Text", help="Text of the new Task")
@@ -77,3 +81,16 @@ def change_status(uid, status):
         task_service.save_tasks()
     else:
         click.echo("No Task found with uid {}".format(uid))
+
+
+@logbuch.command()
+def migration():
+    path = "/home/icke/.logbuch/"
+    log_file_parser = LogFileParser()
+    log_file_service = LogFileService(log_file_parser)
+    log_files = log_file_service.get_log_files(path)
+    counter = 0
+    for log_file in log_files:
+        task_count = len(log_file.tasks)
+        counter += task_count
+    click.echo("{} Tasks loaded for migration".format(counter))

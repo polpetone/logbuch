@@ -1,5 +1,5 @@
 from src.domain.Task import Task
-from src.portadapter.commands import logbuch
+from src.portadapter.out.commands import logbuch
 from src.service.TastService import TaskService
 
 

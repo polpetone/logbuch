@@ -1,4 +1,4 @@
-from src.portadapter.TaskView import TaskView
+from src.portadapter.out.TaskView import TaskView
 
 
 class TasksView(object):
