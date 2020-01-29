@@ -28,11 +28,15 @@ class TaskView(object):
             return result[0]
         return None
 
-    def simple_view(self):
+    def simple_view(self, with_header=False):
         template = "{0:<40}{1:<30}{2:<40}{3:<20}{4:<30}\n"
         sub_task_template = "{0:<30}{1:<40}{2:<30}{3:<40}{4:<20}{5:<30}\n"
-        out = template.format("uid", "Date", "Text", "Status", "Status Date")
-        out += template.format(self.task.uid, self.date, self.text, self.status, self.status_date)
+
+        if with_header:
+            out = template.format("uid", "Date", "Text", "Status", "Status Date")
+            out += template.format(self.task.uid, self.date, self.text, self.status, self.status_date)
+        else:
+            out = template.format(self.task.uid, self.date, self.text, self.status, self.status_date)
 
         for sub_task_view in self.sub_task_views:
             out += sub_task_template.format("",
