@@ -1,10 +1,12 @@
 import click
 
 from src.domain.Task import Task
+from src.portadapter.TaskView import TaskView
 from src.portadapter.TasksView import TasksView
 from src.service.TastService import TaskService
 
 task_service = TaskService()
+
 
 @click.group()
 def logbuch():
@@ -23,13 +25,14 @@ def tasks(status):
 
 
 @logbuch.command()
-@click.option("--nr", type=click.IntRange(0, 20), prompt="nr", help="Select a task by number")
-def task(nr):
-    tasks = task_service.get_tasks()
-    tasks_view = TasksView(tasks)
-    task_view = tasks_view.get_task_view_by_number(nr)
-    if task_view:
-        print(task_view.simple_view())
+@click.option("--uid", prompt="task id", help="Task id to get view for")
+def task(uid):
+    task = task_service.get_task_by_id(uid)
+    if task:
+        task_view = TaskView(task, None)
+        click.echo(task_view.simple_view())
+    else:
+        click.echo("No Task found with uid {}".format(uid))
 
 
 @logbuch.command()
@@ -66,8 +69,7 @@ def add_sub_task(nr, text):
 def change_status(uid, status):
     task = task_service.get_task_by_id(uid)
     if task:
-            task.change_status(status)
-            task_service.save_tasks()
+        task.change_status(status)
+        task_service.save_tasks()
     else:
         click.echo("No Task found with uid {}".format(uid))
-
