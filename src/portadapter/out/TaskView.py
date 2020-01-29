@@ -35,11 +35,11 @@ class TaskView(object):
         out += template.format(self.task.uid, self.date, self.text, self.status, self.status_date)
 
         for sub_task_view in self.sub_task_views:
-                out += sub_task_template.format("",
-                                                sub_task_view.task.uid,
-                                                sub_task_view.date,
-                                                sub_task_view.text,
-                                                sub_task_view.status,
-                                                sub_task_view.status_date)
+            out += sub_task_template.format("",
+                                            sub_task_view.task.uid,
+                                            sub_task_view.date,
+                                            sub_task_view.text,
+                                            sub_task_view.status,
+                                            sub_task_view.status_date)
 
         return out
