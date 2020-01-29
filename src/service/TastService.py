@@ -33,3 +33,10 @@ class TaskService:
         result = [x for x in self.tasks if x.status.status == status]
         return result
 
+    def get_task_by_id(self, uid):
+        result = [x for x in self.tasks if x.uid == uid]
+        if len(result) == 1:
+            return result[0]
+        else:
+            return None
+
