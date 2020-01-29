@@ -6,10 +6,16 @@ class TaskView(object):
     def __init__(self, task, select_number):
         self.task = task
         self.select_number = select_number
-        self.date = datetime.fromisoformat(task.date).strftime("%d-%m-%Y %H:%M:%S")
+        if task.date:
+            self.date = datetime.fromisoformat(task.date).strftime("%d-%m-%Y %H:%M:%S")
+        else:
+            self.date = ""
         self.text = task.text
         self.status = task.status.status
-        self.status_date = datetime.fromisoformat(task.status.date).strftime("%d-%m-%Y %H:%M:%S")
+        if task.status.date:
+            self.status_date = datetime.fromisoformat(task.status.date).strftime("%d-%m-%Y %H:%M:%S")
+        else:
+            self.status_date = ""
         self.sub_task_views = []
         sub_task_counter = 0
         for sub_task in task.sub_tasks:
