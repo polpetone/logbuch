@@ -34,9 +34,14 @@ class TaskService:
         return result
 
     def get_task_by_id(self, uid):
+        found_task = None
         result = [x for x in self.tasks if x.uid == uid]
         if len(result) == 1:
-            return result[0]
+            found_task = result[0]
         else:
-            return None
+            for task in self.tasks:
+                result = [x for x in task.sub_tasks if x.uid == uid]
+                if len(result) == 1:
+                   found_task = result[0]
+        return found_task
 

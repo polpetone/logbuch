@@ -17,14 +17,15 @@ class TasksView(object):
         return None
 
     def simple_table_view(self):
-        template = "{0:40}{1:<5}{2:<30}{3:<40}{4:<20}{5:<30}\n"
+        template = "{0:<40}{1:<5}{2:<30}{3:<40}{4:<20}{5:<30}\n"
         gap_template = "{0:<100}\n"
-        sub_task_template = "{0:<20}{1:<5}{2:<30}{3:<40}{4:<20}{5:<30}\n"
+        sub_task_template = "{0:<30}{1:<40}{2:<5}{3:<30}{4:<40}{5:<20}{6:<30}\n"
         out = template.format("Id", "Nr", "Date", "Text", "Status", "Status Date")
         select_number = 0
         for task_view in self.task_views:
             select_number += 1
             out += gap_template.format(
+                "--------------------------------------------------------------------"
                 "--------------------------------------------------------------------------------"
                 "--------------------------------------------------------------------------------")
             out += template.format(
@@ -38,6 +39,7 @@ class TasksView(object):
             for sub_task_view in task_view.sub_tasks:
                 sub_task_select_number += 1
                 out += sub_task_template.format("",
+                                                sub_task_view.task.uid,
                                                 sub_task_view.select_number,
                                                 sub_task_view.date,
                                                 sub_task_view.text,
