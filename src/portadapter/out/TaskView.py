@@ -11,6 +11,7 @@ class TaskView(object):
         else:
             self.date = ""
         self.text = task.text
+        self.shortened_text = task.text[:35]
         self.status = task.status.status
         if task.status.date:
             self.status_date = datetime.fromisoformat(task.status.date).strftime("%d-%m-%Y %H:%M:%S")
@@ -34,15 +35,15 @@ class TaskView(object):
 
         if with_header:
             out = template.format("uid", "Date", "Text", "Status", "Status Date")
-            out += template.format(self.task.uid, self.date, self.text, self.status, self.status_date)
+            out += template.format(self.task.uid, self.date, self.shortened_text, self.status, self.status_date)
         else:
-            out = template.format(self.task.uid, self.date, self.text, self.status, self.status_date)
+            out = template.format(self.task.uid, self.date, self.shortened_text, self.status, self.status_date)
 
         for sub_task_view in self.sub_task_views:
             out += sub_task_template.format("",
                                             sub_task_view.task.uid,
                                             sub_task_view.date,
-                                            sub_task_view.text,
+                                            sub_task_view.shortened_text,
                                             sub_task_view.status,
                                             sub_task_view.status_date)
 
