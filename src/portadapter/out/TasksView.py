@@ -18,14 +18,11 @@ class TasksView(object):
 
     def simple_table_view(self):
         template = "{0:<40}{1:<30}{2:<40}{3:<20}{4:<30}\n"
-        gap_template = "{0:<100}\n"
+        gap_template = "{0:<160}\n"
         out = template.format("Id", "Nr", "Date", "Text", "Status", "Status Date")
         for task_view in self.task_views:
-            out += gap_template.format(
-                "--------------------------------------------------------------------"
-                "--------------------------------------------------------------------------------"
-                "--------------------------------------------------------------------------------")
-
+            out += gap_template.format(200*"-")
             out += task_view.simple_view()
+            out += "\n"
 
         return out
