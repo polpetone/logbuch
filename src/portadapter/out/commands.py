@@ -100,13 +100,13 @@ def migration():
                 text=task.text,
                 status=TaskStatus(task_status_to_string(task.status)),
                 uid=str(task.uuid),
-                date=task.date.isoformat(),
+                date=task.date,
             )
 
             for sub_task in task.sub_tasks:
                 date = None
                 if sub_task.date:
-                    date = sub_task.date.isoformat()
+                    date = sub_task.date
 
                 migrated_sub_task = Task(
                     text=sub_task.text,

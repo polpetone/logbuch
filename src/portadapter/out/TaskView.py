@@ -1,20 +1,17 @@
-from datetime import datetime
-
-
 class TaskView(object):
 
     def __init__(self, task, select_number):
         self.task = task
         self.select_number = select_number
         if task.date:
-            self.date = datetime.fromisoformat(task.date).strftime("%d-%m-%Y %H:%M:%S")
+            self.date = task.date.strftime("%d-%m-%Y %H:%M:%S")
         else:
             self.date = ""
         self.text = task.text
         self.shortened_text = task.text[:35]
         self.status = task.status.status
         if task.status.date:
-            self.status_date = datetime.fromisoformat(task.status.date).strftime("%d-%m-%Y %H:%M:%S")
+            self.status_date = task.status.date.strftime("%d-%m-%Y %H:%M:%S")
         else:
             self.status_date = ""
         self.sub_task_views = []

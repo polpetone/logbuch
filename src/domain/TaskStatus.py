@@ -4,7 +4,7 @@ from datetime import datetime
 
 class TaskStatus(object):
 
-    def __init__(self, status="OPEN", date=datetime.now().isoformat()):
+    def __init__(self, status="OPEN", date=datetime.now()):
         self.status = status
         self.date = date
 

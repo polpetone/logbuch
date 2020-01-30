@@ -3,7 +3,7 @@ import jsonpickle
 from src.domain.Task import Task
 from src.service.Tasks import Tasks
 
-task_repo_file_path = "data/task_repo_file_migration.json"
+task_repo_file_path = "data/tasks.json"
 
 
 class TaskService:
@@ -31,6 +31,10 @@ class TaskService:
 
     def filter_tasks_by_status(self, status):
         result = [x for x in self.tasks if x.status.status == status]
+        return result
+
+    def filter_tasks_by_from_date(self, from_date):
+        result = [x for x in self.tasks if x.date > from_date]
         return result
 
     def get_task_by_id(self, uid):

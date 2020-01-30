@@ -10,7 +10,7 @@ class Task(object):
                  text,
                  status=TaskStatus(),
                  uid=str(uuid.uuid4()),
-                 date=datetime.now().isoformat(),
+                 date=datetime.now(),
                  sub_tasks=None):
         if sub_tasks is None:
             sub_tasks = list()
@@ -24,7 +24,7 @@ class Task(object):
         self.sub_tasks.append(task)
 
     def change_status(self, status):
-        self.status = TaskStatus(status, datetime.now().isoformat())
+        self.status = TaskStatus(status, datetime.now())
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__,
