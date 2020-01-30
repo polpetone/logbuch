@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import click
 
 from src.domain.Task import Task
@@ -18,14 +20,17 @@ def logbuch():
 
 
 @logbuch.command()
-@click.option("--status", help="OPEN, CANCELED, CLOSED")
-def tasks(status):
+@click.option("--status", help="OPEN, CANCELED, FINISHED")
+@click.option("--from_date", help="Date Format: 23.5.2019")
+def tasks(status, from_date):
+    if from_date:
+        print(from_date)
+        task_service.filter_tasks_by_from_date(datetime.strptime(from_date, "%d.%m.%Y"))
     if status:
-        tasks = task_service.filter_tasks_by_status(status)
-    else:
-        tasks = task_service.get_tasks()
-    tasks_view = TasksView(tasks)
+        task_service.filter_tasks_by_status(status)
+    tasks_view = TasksView(task_service.filtered_tasks)
     click.echo(tasks_view.simple_table_view())
+    click.echo("Found {} Tasks".format(len(tasks_view.task_views)))
 
 
 @logbuch.command()

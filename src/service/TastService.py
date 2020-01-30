@@ -10,6 +10,7 @@ class TaskService:
 
     def __init__(self):
         self.tasks = self.load_tasks()
+        self.filtered_tasks = self.load_tasks()
 
     def create_task(self, text):
         task = Task(text)
@@ -30,12 +31,10 @@ class TaskService:
         return tasks
 
     def filter_tasks_by_status(self, status):
-        result = [x for x in self.tasks if x.status.status == status]
-        return result
+        self.filtered_tasks = [x for x in self.filtered_tasks if x.status.status == status]
 
     def filter_tasks_by_from_date(self, from_date):
-        result = [x for x in self.tasks if x.date > from_date]
-        return result
+        self.filtered_tasks = [x for x in self.filtered_tasks if x.date > from_date]
 
     def get_task_by_id(self, uid):
         found_task = None
