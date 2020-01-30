@@ -97,25 +97,30 @@ def migration():
     log_file_service = LogFileService(log_file_parser)
     log_files = log_file_service.get_log_files(path)
     counter = 0
+
+    log_files.sort(key=lambda x: x.date)
+
     for log_file in log_files:
+        print(log_file.date.strftime("%d.%m.%Y"))
         task_count = len(log_file.tasks)
         counter += task_count
         for task in log_file.tasks:
             migrated_task = Task(
                 text=task.text,
-                status=TaskStatus(task_status_to_string(task.status)),
+                status=TaskStatus(task_status_to_string(task.status), task.date),
                 uid=str(task.uuid),
                 date=task.date,
             )
 
             for sub_task in task.sub_tasks:
-                date = None
                 if sub_task.date:
                     date = sub_task.date
+                else:
+                    date = task.date
 
                 migrated_sub_task = Task(
                     text=sub_task.text,
-                    status=TaskStatus(task_status_to_string(sub_task.status)),
+                    status=TaskStatus(task_status_to_string(sub_task.status), date),
                     uid=str(sub_task.uuid),
                     date=date
                 )
@@ -131,7 +136,14 @@ def migration():
 def insert_and_delete_duplicate(tasks, task):
     result = [x for x in tasks if x.text == task.text]
     if len(result) == 1:
-        deleted_task = task_service.delete_task_by_id(result[0].uid)
-        if deleted_task is not None:
-            print("Deleted Task {}".format(deleted_task.uid))
-    tasks.append(task)
+        if result[0].date < task.date:
+            deleted_task = task_service.delete_task_by_id(result[0].uid)
+            if deleted_task is not None:
+                print("Deleted Task {}".format(deleted_task.uid))
+            task.date = result[0].date
+            tasks.append(task)
+
+    else:
+        tasks.append(task)
+
+
