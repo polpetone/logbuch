@@ -21,7 +21,7 @@ class TasksView(object):
         gap_template = "{0:<160}\n"
         out = template.format("Id", "Nr", "Date", "Text", "Status", "Status Date")
         for task_view in self.task_views:
-            out += gap_template.format(200*"-")
+            out += gap_template.format(200 * "-")
             out += task_view.simple_view()
             out += "\n"
 

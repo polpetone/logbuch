@@ -9,3 +9,9 @@
 ## rückspul funktion ?
 ### löschen von tasks
 ### time maschine ?
+
+
+
+## Known Issues
+
+### Status beim Migration nicht korrekt gesetzt
