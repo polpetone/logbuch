@@ -22,12 +22,15 @@ def logbuch():
 @logbuch.command()
 @click.option("--status", help="OPEN, CANCELED, FINISHED")
 @click.option("--from_date", help="Date Format: 23.5.2019")
-def tasks(status, from_date):
+@click.option("--query", help="Search Query")
+def tasks(status, from_date, query):
     if from_date:
         print(from_date)
         task_service.filter_tasks_by_from_date(datetime.strptime(from_date, "%d.%m.%Y"))
     if status:
         task_service.filter_tasks_by_status(status)
+    if query:
+        task_service.filter_tasks_by_text_query(query)
     tasks_view = TasksView(task_service.filtered_tasks)
     click.echo(tasks_view.simple_table_view())
     click.echo("Found {} Tasks".format(len(tasks_view.task_views)))

@@ -65,3 +65,15 @@ class TaskService:
                     self.save_tasks()
                     break
         return found_task
+
+    def filter_tasks_by_text_query(self, query):
+        result = []
+        for task in self.filtered_tasks:
+            if query in task.text:
+                result.append(task)
+            else:
+                for sub_task in task.sub_tasks:
+                    if query in sub_task.text:
+                        result.append(task)
+                        break
+        self.filtered_tasks = result
