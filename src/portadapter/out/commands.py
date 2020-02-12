@@ -34,7 +34,7 @@ def cmd1(color):
     click.echo('Chosen color is %s' % color)
 
 
-def get_tasks(ctx, args, incomplete):
+def get_open_tasks(ctx, args, incomplete):
     task_service.filter_tasks_by_status("OPEN")
     open_tasks = task_service.filtered_tasks
     tasks_recos = []
@@ -44,7 +44,7 @@ def get_tasks(ctx, args, incomplete):
 
 
 @cli.command()
-@click.argument("uid", type=click.STRING, autocompletion=get_tasks)
+@click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 def task(uid):
     found_task = task_service.get_task_by_id(uid)
     if found_task:
@@ -52,6 +52,20 @@ def task(uid):
         click.echo(task_view.detail_view())
     else:
         click.echo("No Task found with uid {}".format(uid))
+
+
+@cli.command()
+@click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
+@click.option("--text", prompt="Text", help="Text of the new sub task")
+def add_sub_task(uid, text):
+    found_task = task_service.get_task_by_id(uid)
+    if found_task:
+        sub_task = Task(text)
+        found_task.add_sub_task(sub_task)
+        task_service.save_tasks()
+        click.echo("Sub Task added for {}".format(uid))
+    else:
+        click.echo("No Task found with number {}".format(uid))
 
 
 @cli.command()
@@ -91,20 +105,6 @@ def add_task(text):
     tasks = task_service.get_tasks()
     tasks_view = TasksView(tasks)
     click.echo(tasks_view.simple_table_view())
-
-
-@cli.command()
-@click.option("--uid", prompt="task id", help="Task id to add sub task for")
-@click.option("--text", prompt="Text", help="Text of the new sub task")
-def add_sub_task(uid, text):
-    task = task_service.get_task_by_id(uid)
-    if task:
-        sub_task = Task(text)
-        task.add_sub_task(sub_task)
-        task_service.save_tasks()
-        click.echo("Sub Task added for {}".format(uid))
-    else:
-        click.echo("No Task found with number {}".format(uid))
 
 
 @cli.command()
