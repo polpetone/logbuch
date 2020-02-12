@@ -57,6 +57,20 @@ def task(uid):
         click.echo("No Task found with uid {}".format(uid))
 
 
+# TODO: just a example how to open a editor, needs to be finished -> parser and edit view for tasks and sub
+# sub tasks needed
+@cli.command()
+@click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
+def edit_task(uid):
+    found_task = task_service.get_task_by_id(uid)
+    if found_task:
+        task_view = TaskView(found_task, None)
+        altered_text = click.edit(task_view.detail_view())
+        click.echo(altered_text)
+    else:
+        click.echo("No Task found with uid {}".format(uid))
+
+
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 @click.option("--text", prompt="Text", help="Text of the new sub task")
