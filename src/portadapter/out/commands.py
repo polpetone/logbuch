@@ -21,6 +21,39 @@ def cli():
     """Logbuch"""
 
 
+def get_colors(ctx, args, incomplete):
+    colors = [('red', 'help string for the color red'),
+              ('blue', 'help string for the color blue'),
+              ('green', 'help string for the color green')]
+    return [c for c in colors if incomplete in c[0]]
+
+
+@cli.command()
+@click.argument("color", type=click.STRING, autocompletion=get_colors)
+def cmd1(color):
+    click.echo('Chosen color is %s' % color)
+
+
+def get_tasks(ctx, args, incomplete):
+    task_service.filter_tasks_by_status("OPEN")
+    open_tasks = task_service.filtered_tasks
+    tasks_recos = []
+    for open_task in open_tasks:
+        tasks_recos.append((open_task.uid, open_task.text))
+    return [t for t in tasks_recos if incomplete in t[0]]
+
+
+@cli.command()
+@click.argument("uid", type=click.STRING, autocompletion=get_tasks)
+def task(uid):
+    found_task = task_service.get_task_by_id(uid)
+    if found_task:
+        task_view = TaskView(found_task, None)
+        click.echo(task_view.detail_view())
+    else:
+        click.echo("No Task found with uid {}".format(uid))
+
+
 @cli.command()
 @click.option("--status", help="OPEN, CANCELED, FINISHED")
 @click.option("--from_date", help="Date Format: 23.5.2019")
@@ -38,17 +71,6 @@ def tasks(status, from_date, query):
     tasks_view = TasksView(task_service.filtered_tasks)
     click.echo(tasks_view.simple_table_view())
     click.echo("Found {} Tasks".format(len(tasks_view.task_views)))
-
-
-@cli.command()
-@click.option("--uid", prompt="task id", help="Task id to get view for")
-def task(uid):
-    task = task_service.get_task_by_id(uid)
-    if task:
-        task_view = TaskView(task, None)
-        click.echo(task_view.detail_view())
-    else:
-        click.echo("No Task found with uid {}".format(uid))
 
 
 @cli.command()
@@ -138,19 +160,6 @@ def migration():
     task_service.save_tasks()
     click.echo("{} Tasks loaded for migration".format(counter))
     click.echo("{} Tasks".format(len(task_service.tasks)))
-
-
-def get_colors(ctx, args, incomplete):
-    colors = [('red', 'help string for the color red'),
-              ('blue', 'help string for the color blue'),
-              ('green', 'help string for the color green')]
-    return [c for c in colors if incomplete in c[0]]
-
-
-@cli.command()
-@click.argument("color", type=click.STRING, autocompletion=get_colors)
-def cmd1(color):
-    click.echo('Chosen color is %s' % color)
 
 
 def insert_and_delete_duplicate(tasks, task):
