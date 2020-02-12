@@ -27,6 +27,7 @@ class TaskService:
     def save_tasks(self):
         with open(task_repo_file_path, 'w') as task_repo_file:
             task_repo_file.write(jsonpickle.encode(Tasks(self.tasks)))
+        self.filtered_tasks = self.load_tasks()
 
     def load_tasks(self):
         with open(task_repo_file_path, 'r') as task_repo_file:
@@ -86,4 +87,3 @@ class TaskService:
                     self.logger.debug("Deleted SubTask uid: {} Text: {}".format(found_task.uid, found_task.text))
                     break
         return found_task
-

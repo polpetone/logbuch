@@ -30,6 +30,22 @@ def get_open_tasks(ctx, args, incomplete):
     return [t for t in tasks_recos if incomplete in t[0]]
 
 
+def get_sub_tasks(ctx, args, incomplete):
+    found_task = task_service.get_task_by_id(args[1])
+    tasks_recos = []
+    if len(found_task.sub_tasks) > 0:
+        for sub_task in found_task.sub_tasks:
+            tasks_recos.append((sub_task.uid, sub_task.text))
+        return [t for t in tasks_recos if incomplete in t[0]]
+    else:
+        return "0"
+
+
+def get_status(ctx, args, incomplete):
+    status = [("OPEN", "OPEN"), ("CANCELED", "CANCELED"), ("CLOSED", "CLOSED")]
+    return [s for s in status if incomplete in s[0]]
+
+
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 def task(uid):
@@ -53,6 +69,46 @@ def add_sub_task(uid, text):
         click.echo("Sub Task added for {}".format(uid))
     else:
         click.echo("No Task found with number {}".format(uid))
+
+
+@cli.command()
+@click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
+@click.argument("sub_uid", type=click.STRING, autocompletion=get_sub_tasks)
+@click.argument("status", type=click.STRING, autocompletion=get_status)
+def change_status_sub_task(uid, sub_uid, status):
+    task_uid_to_change_status_for = uid
+    if sub_uid != '0':
+        task_uid_to_change_status_for = sub_uid
+    task = task_service.get_task_by_id(task_uid_to_change_status_for)
+    if task:
+        task.change_status(status)
+        task_service.save_tasks()
+    else:
+        click.echo("No Task found with uid {}".format(uid))
+
+
+@cli.command()
+@click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
+@click.argument("status", type=click.STRING, autocompletion=get_status)
+def change_status_task(uid, status):
+    task = task_service.get_task_by_id(uid)
+    if task:
+        task.change_status(status)
+        task_service.save_tasks()
+    else:
+        click.echo("No Task found with uid {}".format(uid))
+
+
+@cli.command()
+@click.option("--uid", prompt="task id", help="Task id to change status for")
+@click.option("--status", prompt="status", help="OPEN, CANCELED, CLOSED")
+def change_status(uid, status):
+    task = task_service.get_task_by_id(uid)
+    if task:
+        task.change_status(status)
+        task_service.save_tasks()
+    else:
+        click.echo("No Task found with uid {}".format(uid))
 
 
 @cli.command()
@@ -89,21 +145,10 @@ def delete_task(uid):
 def add_task(text):
     task_service.create_task(text)
     task_service.save_tasks()
-    tasks = task_service.get_tasks()
-    tasks_view = TasksView(tasks)
+    task_service.filter_tasks_by_status("OPEN")
+    found_tasks = task_service.filtered_tasks
+    tasks_view = TasksView(found_tasks)
     click.echo(tasks_view.simple_table_view())
-
-
-@cli.command()
-@click.option("--uid", prompt="task id", help="Task id to change status for")
-@click.option("--status", prompt="status", help="OPEN, CANCELED, CLOSED")
-def change_status(uid, status):
-    task = task_service.get_task_by_id(uid)
-    if task:
-        task.change_status(status)
-        task_service.save_tasks()
-    else:
-        click.echo("No Task found with uid {}".format(uid))
 
 
 @cli.command()
