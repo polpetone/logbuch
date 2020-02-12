@@ -47,7 +47,7 @@ def task(uid):
     task = task_service.get_task_by_id(uid)
     if task:
         task_view = TaskView(task, None)
-        click.echo(task_view.simple_view())
+        click.echo(task_view.detail_view())
     else:
         click.echo("No Task found with uid {}".format(uid))
 

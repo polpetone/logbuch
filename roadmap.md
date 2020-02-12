@@ -1,5 +1,5 @@
 
-## Logging Framework einbauen
+## Logging Framework einbauen DONE
 
 ## Integration Test Framework einbauen
 ### Integration Test Szenarien bauen
@@ -9,6 +9,7 @@
 ## rückspul funktion ?
 ### löschen von tasks
 ### time maschine ?
+=> persist log
 
 
 
