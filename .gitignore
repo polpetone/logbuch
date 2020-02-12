@@ -4,3 +4,4 @@ data/
 logs/
 build/
 dist/
+src.egg-info/
