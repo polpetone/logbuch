@@ -21,19 +21,6 @@ def cli():
     """Logbuch"""
 
 
-def get_colors(ctx, args, incomplete):
-    colors = [('red', 'help string for the color red'),
-              ('blue', 'help string for the color blue'),
-              ('green', 'help string for the color green')]
-    return [c for c in colors if incomplete in c[0]]
-
-
-@cli.command()
-@click.argument("color", type=click.STRING, autocompletion=get_colors)
-def cmd1(color):
-    click.echo('Chosen color is %s' % color)
-
-
 def get_open_tasks(ctx, args, incomplete):
     task_service.filter_tasks_by_status("OPEN")
     open_tasks = task_service.filtered_tasks
