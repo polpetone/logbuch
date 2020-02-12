@@ -1,0 +1,4 @@
+
+        [console_scripts]
+        logbuch=src.portadapter.out.commands:cli
+    

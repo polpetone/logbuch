@@ -17,7 +17,7 @@ task_service = TaskService()
 
 
 @click.group()
-def logbuch():
+def cli():
     """Logbuch"""
 
 
