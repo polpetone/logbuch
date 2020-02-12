@@ -9,8 +9,10 @@ from src.portadapter.input.migration.domain.TaskStatus import task_status_to_str
 from src.portadapter.input.migration.log_file_parser import LogFileParser
 from src.portadapter.out.TaskView import TaskView
 from src.portadapter.out.TasksView import TasksView
-from src.service.TastService import TaskService
+from src.service.TaskService import TaskService
+from src.portadapter.out.logger import init as init_logger
 
+logger = init_logger("src.portadapter.out.commands")
 task_service = TaskService()
 
 
@@ -24,6 +26,9 @@ def logbuch():
 @click.option("--from_date", help="Date Format: 23.5.2019")
 @click.option("--query", help="Search Query")
 def tasks(status, from_date, query):
+
+    logger.debug("tasks filter: status {}, from_date {}, query {}".format(status, from_date, query))
+
     if from_date:
         print(from_date)
         task_service.filter_tasks_by_from_date(datetime.strptime(from_date, "%d.%m.%Y"))

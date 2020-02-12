@@ -2,6 +2,10 @@ import uuid
 from datetime import datetime
 import json
 from src.domain.TaskStatus import TaskStatus
+from src.portadapter.out.logger import init as init_logger
+
+# TODO: get file name automatic
+logger = init_logger("src.domain.Task")
 
 
 class Task(object):
@@ -24,6 +28,7 @@ class Task(object):
         self.sub_tasks.append(task)
 
     def change_status(self, status):
+        logger.debug("Changed Status from {} to {} for Task {}".format(self.status.status, status, self.uid))
         self.status = TaskStatus(status, datetime.now())
 
     def to_json(self):

@@ -1,6 +1,6 @@
 from src.domain.Task import Task
 from src.portadapter.out.commands import logbuch
-from src.service.TastService import TaskService
+from src.service.TaskService import TaskService
 
 
 def test0():
