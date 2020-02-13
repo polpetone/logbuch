@@ -4,7 +4,7 @@ from src.domain.Task import Task
 from src.service.Tasks import Tasks
 from src.portadapter.out.logger import init as init_logger
 
-task_repo_file_path = "data/m2.json"
+task_repo_file_path = "/home/icke/.logbuch/data/m2.json"
 
 
 class TaskService:

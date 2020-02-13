@@ -1,5 +1,7 @@
 import logging
 
+path = "/home/icke/.logbuch"
+
 
 def init(name):
     requests_logger = logging.getLogger("urllib3")
@@ -10,10 +12,10 @@ def init(name):
 
     logger.setLevel(logging.DEBUG)
 
-    fh_debug = logging.FileHandler("logs/debug.log")
+    fh_debug = logging.FileHandler(path + "/logs/debug.log")
     fh_debug.setLevel(logging.DEBUG)
 
-    fh_info = logging.FileHandler("logs/info.log")
+    fh_info = logging.FileHandler(path + "/logs/info.log")
     fh_info.setLevel(logging.INFO)
 
     ch = logging.StreamHandler()
