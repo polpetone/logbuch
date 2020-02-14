@@ -51,10 +51,11 @@ class TaskView(object):
         return out
 
     def detail_view(self):
-        id_line          = "        uid: {}".format(self.task.uid)
-        date_line        = "       date: {}".format(self.date)
-        text_line        = "       text: {}".format(self.task.text)
-        status_line      = "     status: {}".format(self.status)
+
+        id_line = "        uid: {}".format(self.task.uid)
+        date_line = "       date: {}".format(self.date)
+        text_line = "       text: {}".format(self.task.text)
+        status_line = "     status: {}".format(self.status)
         status_date_line = "status date: {}".format(self.status_date)
 
         out = id_line + "\n"
@@ -72,3 +73,14 @@ class TaskView(object):
             sub_task_out += sub_task_view.detail_view()
 
         return out + sub_task_out
+
+    def parse_from_detail_view_string(self, detail_view_string):
+
+        lines = detail_view_string.split("\n")
+        for line in lines:
+            if "text:" in line:
+                text_line = line.split("text:")
+                self.task.text = text_line[1].strip()
+                return TaskView(self.task, 0)
+
+        return None
