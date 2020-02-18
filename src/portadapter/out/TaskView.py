@@ -8,7 +8,7 @@ class TaskView(object):
         else:
             self.date = ""
         self.text = task.text
-        self.shortened_text = task.text[:35]
+        self.shortened_text = task.text[:55]
         self.status = task.status.status
         if task.status.date:
             self.status_date = task.status.date.strftime("%d-%m-%Y %H:%M:%S")
@@ -27,8 +27,8 @@ class TaskView(object):
         return None
 
     def simple_view(self):
-        template = "{0:<30}{1:<40}{2:<20}{3:<30}\n"
-        sub_task_template = "{0:<30}{1:<30}{2:<40}{3:<20}{4:<30}\n"
+        template = "{0:<30}{1:<60}{2:<20}{3:<30}\n"
+        sub_task_template = "{0:<30}{1:<30}{2:<60}{3:<20}{4:<30}\n"
         gap_template = "{0:<160}\n"
 
         out = template.format(self.date, self.shortened_text, self.status, self.status_date)
