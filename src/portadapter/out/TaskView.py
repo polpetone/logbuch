@@ -26,16 +26,12 @@ class TaskView(object):
             return result[0]
         return None
 
-    def simple_view(self, with_header=False):
+    def simple_view(self):
         template = "{0:<30}{1:<40}{2:<20}{3:<30}\n"
         sub_task_template = "{0:<30}{1:<30}{2:<40}{3:<20}{4:<30}\n"
         gap_template = "{0:<160}\n"
 
-        if with_header:
-            out = template.format("Date", "Text", "Status", "Status Date")
-            out += template.format(self.date, self.shortened_text, self.status, self.status_date)
-        else:
-            out = template.format(self.date, self.shortened_text, self.status, self.status_date)
+        out = template.format(self.date, self.shortened_text, self.status, self.status_date)
 
         if len(self.sub_task_views) > 0:
             out += gap_template.format(200 * ".")
