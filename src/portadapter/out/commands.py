@@ -11,6 +11,7 @@ from src.portadapter.out.TaskView import TaskView
 from src.portadapter.out.TasksView import TasksView
 from src.portadapter.out.logger import init as init_logger
 from src.service.TaskService import TaskService
+from src.conf import logbuch_path
 
 logger = init_logger("src.portadapter.out.commands")
 task_service = TaskService()
@@ -167,7 +168,7 @@ def add_task(text):
 
 @cli.command()
 def migration():
-    path = "/home/icke/.logbuch/"
+    path = logbuch_path + "/"
     log_file_parser = LogFileParser()
     log_file_service = LogFileService(log_file_parser)
     log_files = log_file_service.get_log_files(path)
