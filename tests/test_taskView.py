@@ -21,10 +21,12 @@ def create_detail_view_string(task_view, text):
 
 class TestTaskView(TestCase):
 
-    task = Task("foobar")
-    task_view = TaskView(task, 0)
-    out = create_detail_view_string(task_view, "altered text")
-    altered_task_view = task_view.parse_from_detail_view_string(out)
+    def test_alter_text(self):
 
-    assert altered_task_view.task.uid == task_view.task.uid
-    assert altered_task_view.task.text == "altered text"
+        task = Task("foobar")
+        task_view = TaskView(task, 0)
+        out = create_detail_view_string(task_view, "altered text")
+        altered_task_view = task_view.parse_from_detail_view_string(out)
+
+        assert altered_task_view.task.uid == task_view.task.uid
+        assert altered_task_view.task.text == "altered text"
