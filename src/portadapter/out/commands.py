@@ -179,7 +179,6 @@ def migration():
     log_files.sort(key=lambda x: x.date)
 
     for log_file in log_files:
-        print(log_file.date.strftime("%d.%m.%Y"))
         task_count = len(log_file.tasks)
         counter += task_count
         for task in log_file.tasks:
@@ -215,9 +214,7 @@ def insert_and_delete_duplicate(tasks, task):
     result = [x for x in tasks if x.text == task.text]
     if len(result) == 1:
         if result[0].date < task.date:
-            deleted_task = task_service.delete_task_by_id(result[0].uid)
-            if deleted_task is not None:
-                print("Deleted Task {}".format(deleted_task.uid))
+            task_service.delete_task_by_id(result[0].uid)
             task.date = result[0].date
             tasks.append(task)
 

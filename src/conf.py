@@ -2,4 +2,4 @@ import os
 
 logbuch_path = os.path.expanduser('~') + "/.logbuch"
 
-task_repo_file_path = logbuch_path + "/data/private.json"
+task_repo_file_path = logbuch_path + "/data/qudosoft.json"
