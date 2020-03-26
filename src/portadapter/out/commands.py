@@ -129,7 +129,7 @@ def change_status(uid, status):
 
 
 @cli.command()
-@click.option("--status", help="OPEN, CANCELED, FINISHED")
+@click.option("--status", help="OPEN, CANCELED, FINISHED", default="OPEN")
 @click.option("--from_date", help="Date Format: 23.5.2019")
 @click.option("--query", help="Search Query")
 def tasks(status, from_date, query):
