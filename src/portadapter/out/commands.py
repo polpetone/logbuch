@@ -43,7 +43,7 @@ def get_sub_tasks(ctx, args, incomplete):
 
 
 def get_status(ctx, args, incomplete):
-    status = [("OPEN", "OPEN"), ("CANCELED", "CANCELED"), ("CLOSED", "CLOSED")]
+    status = [("OPEN", "OPEN"), ("CANCELED", "CANCELED"), ("FINISHED", "FINISHED"), ("HOLD", "HOLD")]
     return [s for s in status if incomplete in s[0]]
 
 
