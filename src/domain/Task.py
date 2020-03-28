@@ -22,6 +22,7 @@ class Task(object):
         self.status = status
         self.uid = uid
         self.date = date
+        self.notes = []
         self.sub_tasks = sub_tasks
 
     def add_sub_task(self, task):
@@ -30,6 +31,9 @@ class Task(object):
     def change_status(self, status):
         logger.debug("Changed Status from {} to {} for Task {}".format(self.status.status, status, self.uid))
         self.status = TaskStatus(status, datetime.now())
+
+    def add_note(self, note):
+        self.notes.append(note)
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__,
