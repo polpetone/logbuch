@@ -90,7 +90,7 @@ def add_sub_task(uid, text):
 
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
-@click.option("--note", prompt="Text", help="Text of the new sub task")
+@click.argument("note", type=click.STRING)
 def add_note(uid, note):
     found_task = task_service.get_task_by_id(uid)
     if found_task:

@@ -6,7 +6,6 @@ from build.lib.src.domain.Task import Task
 class TestTask(TestCase):
 
     def test_create_task(self):
-
         task = Task("some task")
         assert task.text == "some task"
 
