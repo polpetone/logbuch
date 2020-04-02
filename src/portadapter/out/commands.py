@@ -145,19 +145,24 @@ def change_status(uid, status):
 @click.option("--status", help="OPEN, CANCELED, FINISHED", default="OPEN")
 @click.option("--from_date", help="Date Format: 23.5.2019")
 @click.option("--query", help="Search Query")
-def tasks(status, from_date, query):
+@click.option("--all/--not-all", default=False)
+def tasks(status, from_date, query, all):
     logger.debug("tasks filter: status {}, from_date {}, query {}".format(status, from_date, query))
 
-    if from_date:
-        print(from_date)
-        task_service.filter_tasks_by_from_date(datetime.strptime(from_date, "%d.%m.%Y"))
-    if status:
-        task_service.filter_tasks_by_status(status)
-    if query:
-        task_service.filter_tasks_by_text_query(query)
-    tasks_view = TasksView(task_service.filtered_tasks)
+    if not all:
+        if from_date:
+            print(from_date)
+            task_service.filter_tasks_by_from_date(datetime.strptime(from_date, "%d.%m.%Y"))
+        if status:
+            task_service.filter_tasks_by_status(status)
+        if query:
+            task_service.filter_tasks_by_text_query(query)
+        tasks_view = TasksView(task_service.filtered_tasks)
+    else:
+        tasks_view = TasksView(task_service.tasks)
     click.echo(tasks_view.simple_table_view())
     click.echo("Found {} Tasks".format(len(tasks_view.task_views)))
+
 
 
 @cli.command()
