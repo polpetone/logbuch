@@ -68,6 +68,7 @@ def edit_task(uid):
         task_view = TaskView(found_task, None)
         altered_text = click.edit(task_view.detail_view())
         task_view.parse_from_detail_view_string(altered_text)
+        task_service.save_tasks()
         click.echo(altered_text)
         click.echo(task_view.detail_view())
     else:
