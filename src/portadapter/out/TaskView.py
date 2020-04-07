@@ -76,12 +76,19 @@ class TaskView(object):
 
         lines = detail_view_string.split("\n")
         for line in lines:
+
             if "text:" in line:
                 text_line = line.split("text:")
                 self.task.text = text_line[1].strip()
+
             if "task_date:" in line:
                 text_line = line.split("task_date:")
                 date_string = text_line[1].strip()
                 self.task.date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
+
+            if "status_date:" in line:
+                text_line = line.split("status_date:")
+                date_string = text_line[1].strip()
+                self.task.status_date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
 
         return TaskView(self.task, 0)
