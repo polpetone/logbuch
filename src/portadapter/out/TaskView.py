@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 class TaskView(object):
 
     def __init__(self, task, select_number):
@@ -48,10 +51,10 @@ class TaskView(object):
     def detail_view(self):
 
         id_line = "        uid: {}".format(self.task.uid)
-        date_line = "       date: {}".format(self.date)
+        date_line = "       task_date: {}".format(self.date)
         text_line = "       text: {}".format(self.task.text)
         status_line = "     status: {}".format(self.status)
-        status_date_line = "status date: {}".format(self.status_date)
+        status_date_line = "status_date: {}".format(self.status_date)
 
         out = id_line + "\n"
         out += date_line + "\n"
@@ -76,6 +79,9 @@ class TaskView(object):
             if "text:" in line:
                 text_line = line.split("text:")
                 self.task.text = text_line[1].strip()
-                return TaskView(self.task, 0)
+            if "task_date:" in line:
+                text_line = line.split("task_date:")
+                date_string = text_line[1].strip()
+                self.task.date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
 
-        return None
+        return TaskView(self.task, 0)
