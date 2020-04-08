@@ -56,7 +56,7 @@ class TaskView(object):
         id_line = "        uid: {}".format(self.task.uid)
         date_line = "       task_date: {}".format(self.date)
         text_line = "       text: {}".format(self.task.text)
-        status_line = "     status: {}".format(self.status)
+        status_line = "     task_status: {}".format(self.status)
         status_date_line = "status_date: {}".format(self.status_date)
 
         out = id_line + "\n"
@@ -90,6 +90,12 @@ class TaskView(object):
                 text_line = line.split("task_date:")
                 date_string = text_line[1].strip()
                 self.task.date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
+
+            if "task_status:" in line:
+                logger.debug("alter task_status")
+                text_line = line.split("task_status:")
+                status = text_line[1].strip()
+                self.task.status.status = status
 
             if "status_date:" in line:
                 logger.debug("alter status_date")
