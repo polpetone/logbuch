@@ -1,4 +1,7 @@
 from datetime import datetime
+from src.portadapter.out.logger import init as init_logger
+
+logger = init_logger("src.portadapter.domain.TaskView")
 
 
 class TaskView(object):
@@ -78,17 +81,20 @@ class TaskView(object):
         for line in lines:
 
             if "text:" in line:
+                logger.debug("alter text")
                 text_line = line.split("text:")
                 self.task.text = text_line[1].strip()
 
             if "task_date:" in line:
+                logger.debug("alter task_date")
                 text_line = line.split("task_date:")
                 date_string = text_line[1].strip()
                 self.task.date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
 
             if "status_date:" in line:
+                logger.debug("alter status_date")
                 text_line = line.split("status_date:")
                 date_string = text_line[1].strip()
-                self.task.status_date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
+                self.task.status.date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
 
         return TaskView(self.task, 0)
