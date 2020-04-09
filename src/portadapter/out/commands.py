@@ -58,8 +58,6 @@ def task(uid):
         click.echo("No Task found with uid {}".format(uid))
 
 
-# TODO: just a example how to open a editor, needs to be finished -> parser and edit view for tasks and sub
-# sub tasks needed
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 def edit_task(uid):
@@ -68,7 +66,7 @@ def edit_task(uid):
         task_view = TaskView(found_task, None)
         altered_text = click.edit(task_view.detail_view())
         if altered_text:
-            task_view.parse_from_detail_view_string(altered_text)
+            task_view.parse_and_alter(altered_text)
             task_service.save_tasks()
         else:
             click.echo("No changes made on task")

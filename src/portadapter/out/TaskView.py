@@ -1,7 +1,10 @@
 from datetime import datetime
+
 from src.portadapter.out.logger import init as init_logger
 
 logger = init_logger("src.portadapter.domain.TaskView")
+
+TASK_SEPARATOR = "######_TASK_######"
 
 
 class TaskView(object):
@@ -77,48 +80,64 @@ class TaskView(object):
         status_line = "     task_status: {}".format(self.status)
         status_date_line = "status_date: {}".format(self.status_date)
 
-        out = id_line + "\n"
+        out = TASK_SEPARATOR + "\n"
+        out += id_line + "\n"
         out += date_line + "\n"
         out += text_line + "\n"
         out += status_line + "\n"
         out += status_date_line + "\n  \n"
 
-        if len(self.sub_task_views) > 0:
-            sub_task_out = "---- sub tasks ---- \n  \n"
-        else:
-            sub_task_out = ""
+        sub_task_out = ""
 
         for sub_task_view in self.sub_task_views:
             sub_task_out += sub_task_view.detail_view()
 
         return out + sub_task_out
 
-    def parse_from_detail_view_string(self, detail_view_string):
+    def alter_task(self, task_to_alter, task_block):
 
-        lines = detail_view_string.split("\n")
-        for line in lines:
+        for line in task_block:
 
             if "text:" in line:
                 logger.debug("alter text")
                 text_line = line.split("text:")
-                self.task.text = text_line[1].strip()
+                task_to_alter.text = text_line[1].strip()
 
             if "task_date:" in line:
                 logger.debug("alter task_date")
                 text_line = line.split("task_date:")
                 date_string = text_line[1].strip()
-                self.task.date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
+                task_to_alter.date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
 
             if "task_status:" in line:
                 logger.debug("alter task_status")
                 text_line = line.split("task_status:")
                 status = text_line[1].strip()
-                self.task.status.status = status
+                task_to_alter.status.status = status
 
             if "status_date:" in line:
                 logger.debug("alter status_date")
                 text_line = line.split("status_date:")
                 date_string = text_line[1].strip()
-                self.task.status.date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
+                task_to_alter.status.date = datetime.strptime(date_string, "%d-%m-%Y %H:%M:%S")
 
-        return TaskView(self.task, 0)
+    def parse_and_alter(self, detail_view_string):
+        raw_task_blocks = detail_view_string.split(TASK_SEPARATOR)
+
+        unclean_task_blocks = []
+        for raw_task_block in raw_task_blocks:
+            unclean_task_blocks.append(raw_task_block.split('\n'))
+
+        task_blocks = []
+        for task_block in unclean_task_blocks:
+            if len(task_block) > 4:
+                task_blocks.append(task_block)
+
+        logger.debug(task_blocks)
+        self.alter_task(self.task, task_blocks[0])
+
+        if len(task_blocks) > 1:
+            sub_task_index = 0
+            for sub_task_block in task_blocks[1:]:
+                self.alter_task(self.task.sub_tasks[sub_task_index], sub_task_block)
+                sub_task_index += 1
