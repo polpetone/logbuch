@@ -48,7 +48,25 @@ class TaskView(object):
                                             sub_task_view.shortened_text,
                                             sub_task_view.status,
                                             sub_task_view.status_date)
+        return out
 
+    def simple_view_with_uid(self):
+        template = "{0:<50}{1:<30}{2:<60}{3:<20}{4:<30}\n"
+        sub_task_template = "{0:<30}{1:<50}{2:<30}{3:<60}{4:<20}{5:<30}\n"
+        gap_template = "{0:<160}\n"
+
+        out = template.format(self.task.uid, self.date, self.shortened_text, self.status, self.status_date)
+
+        if len(self.sub_task_views) > 0:
+            out += gap_template.format(200 * ".")
+
+        for sub_task_view in self.sub_task_views:
+            out += sub_task_template.format("",
+                                            sub_task_view.task.uid,
+                                            sub_task_view.date,
+                                            sub_task_view.shortened_text,
+                                            sub_task_view.status,
+                                            sub_task_view.status_date)
         return out
 
     def detail_view(self):
