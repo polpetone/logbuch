@@ -16,7 +16,7 @@ class TasksView(object):
         out = template.format("Date", "Text", "Status", "Status Date")
         for task_view in self.task_views:
             out += gap_template.format(200 * "-")
-            out += task_view.simple_view()
+            out += task_view.view_with_notes()
             out += "\n"
         return out
 

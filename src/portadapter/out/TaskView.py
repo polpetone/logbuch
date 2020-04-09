@@ -28,6 +28,7 @@ class TaskView(object):
         for sub_task in task.sub_tasks:
             sub_task_counter += 1
             self.sub_task_views.append(TaskView(sub_task, sub_task_counter))
+        self.notes = "\n".join(self.task.notes)
 
     def get_sub_task_view_by_number(self, number):
         result = [x for x in self.sub_task_views if x.select_number == number]
@@ -51,6 +52,34 @@ class TaskView(object):
                                             sub_task_view.shortened_text,
                                             sub_task_view.status,
                                             sub_task_view.status_date)
+        return out
+
+    def view_with_notes(self):
+        template = "{0:<30}{1:<60}{2:<20}{3:<30}\n"
+        note_template = "{0:<30}{1:<60}{2:<20}{3:<30}\n"
+        sub_task_template = "{0:<30}{1:<30}{2:<60}{3:<20}{4:<30}\n"
+        sub_task_note_template = "{0:<30}{1:<30}{2:<60}{3:<20}{4:<30}\n"
+        gap_template = "{0:<160}\n"
+
+        out = template.format(self.date, self.shortened_text, self.status, self.status_date)
+
+        for note in self.task.notes:
+            note_out = note_template.format("", note, "", "")
+            out += note_out
+
+        if len(self.sub_task_views) > 0:
+            out += gap_template.format(200 * ".")
+
+        for sub_task_view in self.sub_task_views:
+            out += sub_task_template.format("",
+                                            sub_task_view.date,
+                                            sub_task_view.shortened_text,
+                                            sub_task_view.status,
+                                            sub_task_view.status_date)
+            for note in sub_task_view.task.notes:
+                note_out = sub_task_note_template.format("", "", note, "", "")
+                out += note_out
+
         return out
 
     def simple_view_with_uid(self):
@@ -79,13 +108,15 @@ class TaskView(object):
         text_line = "       text: {}".format(self.task.text)
         status_line = "     task_status: {}".format(self.status)
         status_date_line = "status_date: {}".format(self.status_date)
+        notes_lines = "notes: \n{}".format(self.notes)
 
         out = TASK_SEPARATOR + "\n"
         out += id_line + "\n"
         out += date_line + "\n"
         out += text_line + "\n"
         out += status_line + "\n"
-        out += status_date_line + "\n  \n"
+        out += status_date_line + "\n"
+        out += notes_lines + "\n  \n"
 
         sub_task_out = ""
 
