@@ -3,15 +3,10 @@ from datetime import datetime
 import click
 
 from src.domain.Task import Task
-from src.domain.TaskStatus import TaskStatus
-from src.portadapter.input.migration.domain.LogFileService import LogFileService
-from src.portadapter.input.migration.domain.TaskStatus import task_status_to_string
-from src.portadapter.input.migration.log_file_parser import LogFileParser
 from src.portadapter.out.TaskView import TaskView
 from src.portadapter.out.TasksView import TasksView
 from src.portadapter.out.logger import init as init_logger
 from src.service.TaskService import TaskService
-from src.conf import logbuch_path
 
 logger = init_logger("src.portadapter.out.commands")
 task_service = TaskService()
