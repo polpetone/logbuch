@@ -138,7 +138,7 @@ def change_status(uid, status):
 
 @cli.command()
 @click.option("--status", help="OPEN, CANCELED, FINISHED", default="OPEN")
-@click.option("--from_date", help="Date Format: 23.5.2019")
+@click.option("--from_date", help="Date Format: 23-5-2019. Filter tasks by status date")
 @click.option("--query", help="Search Query")
 @click.option("--all/--not-all", default=False)
 @click.option("--show_uid/--not-show-uid", default=False)
@@ -148,7 +148,7 @@ def tasks(status, from_date, query, all, show_uid):
     if not all:
         if from_date:
             print(from_date)
-            task_service.filter_tasks_by_from_date(datetime.strptime(from_date, "%d.%m.%Y"))
+            task_service.filter_tasks_by_from_status_date(datetime.strptime(from_date, "%d-%m-%Y"))
         if status:
             task_service.filter_tasks_by_status(status)
         if query:

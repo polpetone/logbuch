@@ -42,6 +42,10 @@ class TaskService:
         self.filtered_tasks = [x for x in self.filtered_tasks if x.date > from_date]
         self.logger.debug("filter tasks by date: {} -> {} filtered tasks".format(from_date, len(self.filtered_tasks)))
 
+    def filter_tasks_by_from_status_date(self, from_date):
+        self.filtered_tasks = [x for x in self.filtered_tasks if x.status.date > from_date]
+        self.logger.debug("filter tasks by date: {} -> {} filtered tasks".format(from_date, len(self.filtered_tasks)))
+
     def filter_tasks_by_text_query(self, query):
         result = []
         for task in self.filtered_tasks:
