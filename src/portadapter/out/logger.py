@@ -1,5 +1,7 @@
 import logging
-from src.conf import logbuch_path
+import os
+
+logbuch_path=os.path.expanduser('~') + "/.logbuch"
 
 
 def init(name):

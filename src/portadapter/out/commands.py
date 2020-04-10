@@ -1,7 +1,8 @@
 from datetime import datetime
-
 import click
+import os
 
+from src.conf import Conf
 from src.domain.Task import Task
 from src.portadapter.out.TaskView import TaskView
 from src.portadapter.out.TasksView import TasksView
@@ -9,17 +10,31 @@ from src.portadapter.out.logger import init as init_logger
 from src.service.TaskService import TaskService
 
 logger = init_logger("src.portadapter.out.commands")
-task_service = TaskService()
+
+
+class Environment(object):
+    def __init__(self, home=None, debug=False):
+        self.home = os.path.abspath(home or '.')
+        self.debug = debug
+        conf = Conf(logbuch_path=os.path.expanduser('~') + "/.logbuch", task_repo_file_path="/data/current.json")
+        logger.debug("Initialize TaskService")
+        self.task_service = TaskService(conf)
+
+
+pass_environment = click.make_pass_decorator(Environment, ensure=True)
+env = Environment()
 
 
 @click.group()
-def cli():
+@click.pass_context
+def cli(ctx):
+    ctx.object = env
     """Logbuch"""
 
 
 def get_open_tasks(ctx, args, incomplete):
-    task_service.filter_tasks_by_status("OPEN")
-    open_tasks = task_service.filtered_tasks
+    env.task_service.filter_tasks_by_status("OPEN")
+    open_tasks = env.task_service.filtered_tasks
     tasks_recos = []
     for open_task in open_tasks:
         tasks_recos.append((open_task.uid, open_task.text))
@@ -27,7 +42,7 @@ def get_open_tasks(ctx, args, incomplete):
 
 
 def get_sub_tasks(ctx, args, incomplete):
-    found_task = task_service.get_task_by_id(args[1])
+    found_task = env.task_service.get_task_by_id(args[1])
     tasks_recos = []
     if len(found_task.sub_tasks) > 0:
         for sub_task in found_task.sub_tasks:
@@ -44,8 +59,9 @@ def get_status(ctx, args, incomplete):
 
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
-def task(uid):
-    found_task = task_service.get_task_by_id(uid)
+@pass_environment
+def task(env, uid):
+    found_task = env.task_service.get_task_by_id(uid)
     if found_task:
         task_view = TaskView(found_task)
         click.echo(task_view.detail_view())
@@ -55,14 +71,15 @@ def task(uid):
 
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
-def edit_task(uid):
-    found_task = task_service.get_task_by_id(uid)
+@pass_environment
+def edit_task(env, uid):
+    found_task = env.task_service.get_task_by_id(uid)
     if found_task:
         task_view = TaskView(found_task)
         altered_text = click.edit(task_view.detail_view())
         if altered_text:
             task_view.parse_and_alter(altered_text)
-            task_service.save_tasks()
+            env.task_service.save_tasks()
         else:
             click.echo("No changes made on task")
     else:
@@ -72,12 +89,13 @@ def edit_task(uid):
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 @click.option("--text", prompt="Text", help="Text of the new sub task")
-def add_sub_task(uid, text):
-    found_task = task_service.get_task_by_id(uid)
+@pass_environment
+def add_sub_task(env, uid, text):
+    found_task = env.task_service.get_task_by_id(uid)
     if found_task:
         sub_task = Task(text)
         found_task.add_sub_task(sub_task)
-        task_service.save_tasks()
+        env.task_service.save_tasks()
         click.echo("Sub Task added for {}".format(uid))
     else:
         click.echo("No Task found with number {}".format(uid))
@@ -86,11 +104,12 @@ def add_sub_task(uid, text):
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 @click.argument("note", type=click.STRING)
-def add_note(uid, note):
-    found_task = task_service.get_task_by_id(uid)
+@pass_environment
+def add_note(env, uid, note):
+    found_task = env.task_service.get_task_by_id(uid)
     if found_task:
         found_task.add_note(note)
-        task_service.save_tasks()
+        env.task_service.save_tasks()
         click.echo("Note added for {}".format(uid))
     else:
         click.echo("No Task found with number {}".format(uid))
@@ -100,14 +119,15 @@ def add_note(uid, note):
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 @click.argument("sub_uid", type=click.STRING, autocompletion=get_sub_tasks)
 @click.argument("status", type=click.STRING, autocompletion=get_status)
-def change_status_sub_task(uid, sub_uid, status):
+@pass_environment
+def change_status_sub_task(env, uid, sub_uid, status):
     task_uid_to_change_status_for = uid
     if sub_uid != '0':
         task_uid_to_change_status_for = sub_uid
-    task = task_service.get_task_by_id(task_uid_to_change_status_for)
+    task = env.task_service.get_task_by_id(task_uid_to_change_status_for)
     if task:
         task.change_status(status)
-        task_service.save_tasks()
+        env.task_service.save_tasks()
     else:
         click.echo("No Task found with uid {}".format(uid))
 
@@ -115,11 +135,12 @@ def change_status_sub_task(uid, sub_uid, status):
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 @click.argument("status", type=click.STRING, autocompletion=get_status)
-def change_status_task(uid, status):
-    task = task_service.get_task_by_id(uid)
+@pass_environment
+def change_status_task(env, uid, status):
+    task = env.task_service.get_task_by_id(uid)
     if task:
         task.change_status(status)
-        task_service.save_tasks()
+        env.task_service.save_tasks()
     else:
         click.echo("No Task found with uid {}".format(uid))
 
@@ -130,21 +151,22 @@ def change_status_task(uid, status):
 @click.option("--query", help="Search Query")
 @click.option("--all/--not-all", default=False)
 @click.option("--show_uid/--not-show-uid", default=False)
-def tasks(status, from_date, query, all, show_uid):
+@pass_environment
+def tasks(env, status, from_date, query, all, show_uid):
     logger.debug("tasks filter: status {}, from_date {}, query {}".format(status, from_date, query))
 
     if not all:
         if from_date:
-            task_service.filter_tasks_by_from_status_date(datetime.strptime(from_date, "%d-%m-%Y"))
+            env.task_service.filter_tasks_by_from_status_date(datetime.strptime(from_date, "%d-%m-%Y"))
         if status:
-            task_service.filter_tasks_by_status(status)
+            env.task_service.filter_tasks_by_status(status)
         if query:
-            task_service.filter_tasks_by_text_query(query)
-        task_service.sort_filtered_tasks_by_status_date()
-        tasks_view = TasksView(task_service.filtered_tasks)
+            env.task_service.filter_tasks_by_text_query(query)
+        env.task_service.sort_filtered_tasks_by_status_date()
+        tasks_view = TasksView(env.task_service.filtered_tasks)
     else:
-        task_service.sort_filtered_tasks_by_status_date()
-        tasks_view = TasksView(task_service.filtered_tasks)
+        env.task_service.sort_filtered_tasks_by_status_date()
+        tasks_view = TasksView(env.task_service.filtered_tasks)
 
     if show_uid:
         click.echo(tasks_view.simple_table_view_with_uid())
@@ -156,8 +178,9 @@ def tasks(status, from_date, query, all, show_uid):
 
 @cli.command()
 @click.option("--uid", prompt="task id", help="Task id for task to get deleted")
-def delete_task(uid):
-    task = task_service.delete_task_by_id(uid)
+@pass_environment
+def delete_task(env, uid):
+    task = env.task_service.delete_task_by_id(uid)
     if task:
         click.echo("Task {} deleted".format(task.uid))
     else:
@@ -166,10 +189,11 @@ def delete_task(uid):
 
 @cli.command()
 @click.option("--text", prompt="Text", help="Text of the new Task")
-def add_task(text):
-    task_service.create_task(text)
-    task_service.save_tasks()
-    task_service.filter_tasks_by_status("OPEN")
-    found_tasks = task_service.filtered_tasks
+@pass_environment
+def add_task(env, text):
+    env.task_service.create_task(text)
+    env.task_service.save_tasks()
+    env.task_service.filter_tasks_by_status("OPEN")
+    found_tasks = env.task_service.filtered_tasks
     tasks_view = TasksView(found_tasks)
     click.echo(tasks_view.simple_table_view())

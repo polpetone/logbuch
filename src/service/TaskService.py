@@ -3,12 +3,12 @@ import jsonpickle
 from src.domain.Task import Task
 from src.service.Tasks import Tasks
 from src.portadapter.out.logger import init as init_logger
-from src.conf import task_repo_file_path
 
 
 class TaskService:
 
-    def __init__(self):
+    def __init__(self, conf):
+        self.conf = conf
         self.tasks = self.load_tasks()
         self.filtered_tasks = self.load_tasks()
         self.logger = init_logger(str(self.__class__.__module__))
@@ -24,12 +24,12 @@ class TaskService:
         return self.tasks
 
     def save_tasks(self):
-        with open(task_repo_file_path, 'w') as task_repo_file:
+        with open(self.conf.task_repo_file_path, 'w') as task_repo_file:
             task_repo_file.write(jsonpickle.encode(Tasks(self.tasks)))
         self.filtered_tasks = self.load_tasks()
 
     def load_tasks(self):
-        with open(task_repo_file_path, 'r') as task_repo_file:
+        with open(self.conf.task_repo_file_path, 'r') as task_repo_file:
             tasks_json = task_repo_file.read()
         tasks = jsonpickle.decode(tasks_json).tasks
         return tasks

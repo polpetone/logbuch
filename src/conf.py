@@ -1,5 +1,5 @@
-import os
+class Conf(object):
 
-logbuch_path = os.path.expanduser('~') + "/.logbuch"
-
-task_repo_file_path = logbuch_path + "/data/current.json"
+    def __init__(self, logbuch_path, task_repo_file_path):
+        self.logbuch_path = logbuch_path
+        self.task_repo_file_path = self.logbuch_path + task_repo_file_path
