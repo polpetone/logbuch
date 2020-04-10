@@ -125,7 +125,7 @@ def change_status_task(uid, status):
 
 
 @cli.command()
-@click.option("--status", help="OPEN, CANCELED, FINISHED", "HOLD", default="OPEN")
+@click.option("--status", help="OPEN, CANCELED, FINISHED, HOLD", default="OPEN")
 @click.option("--from_date", help="Date Format: 23-5-2019. Filter tasks by status date")
 @click.option("--query", help="Search Query")
 @click.option("--all/--not-all", default=False)
