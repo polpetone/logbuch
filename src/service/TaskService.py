@@ -34,6 +34,9 @@ class TaskService:
         tasks = jsonpickle.decode(tasks_json).tasks
         return tasks
 
+    def sort_filtered_tasks_by_status_date(self):
+        self.filtered_tasks.sort(key=lambda x: x.status.date)
+
     def filter_tasks_by_status(self, status):
         self.filtered_tasks = [x for x in self.filtered_tasks if x.status.status == status]
         self.logger.debug("filter tasks by status: {} -> {} filtered tasks".format(status, len(self.filtered_tasks)))

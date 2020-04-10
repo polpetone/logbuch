@@ -135,15 +135,16 @@ def tasks(status, from_date, query, all, show_uid):
 
     if not all:
         if from_date:
-            print(from_date)
             task_service.filter_tasks_by_from_status_date(datetime.strptime(from_date, "%d-%m-%Y"))
         if status:
             task_service.filter_tasks_by_status(status)
         if query:
             task_service.filter_tasks_by_text_query(query)
+        task_service.sort_filtered_tasks_by_status_date()
         tasks_view = TasksView(task_service.filtered_tasks)
     else:
-        tasks_view = TasksView(task_service.tasks)
+        task_service.sort_filtered_tasks_by_status_date()
+        tasks_view = TasksView(task_service.filtered_tasks)
 
     if show_uid:
         click.echo(tasks_view.simple_table_view_with_uid())
