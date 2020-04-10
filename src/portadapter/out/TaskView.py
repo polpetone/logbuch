@@ -37,10 +37,10 @@ class TaskView(object):
         return None
 
     def view_with_notes(self, gab_char=""):
-        template = "{0:<30}{1:<60}{2:<10}{3:<30}\n"
-        note_template = "{0:<30}{1:<60}{2:<20}{3:<30}\n"
-        sub_task_template = "{0:<30}{1:<30}{2:<60}{3:<10}{4:<30}\n"
-        sub_task_note_template = "{0:<30}{1:<30}{2:<60}{3:<20}{4:<30}\n"
+        template = "{0:<30}{1:<80}{2:<10}{3:<30}\n"
+        note_template = "{0:<30}{1:<80}{2:<20}{3:<30}\n"
+        sub_task_template = "{0:<30}{1:<30}{2:<80}{3:<10}{4:<30}\n"
+        sub_task_note_template = "{0:<30}{1:<30}{2:<80}{3:<20}{4:<30}\n"
         gap_template = "{0:<160}\n"
 
         out = template.format(self.date, self.shortened_text, self.status, self.status_date)
@@ -50,7 +50,7 @@ class TaskView(object):
             out += note_out
 
         if len(self.sub_task_views) > 0:
-            out += gap_template.format(200 * gab_char)
+            out += gap_template.format(180 * gab_char)
 
         for sub_task_view in self.sub_task_views:
             out += sub_task_template.format("",
@@ -65,14 +65,14 @@ class TaskView(object):
         return out
 
     def simple_view_with_uid(self, gab_char=""):
-        template = "{0:<50}{1:<30}{2:<60}{3:<10}{4:<30}\n"
-        sub_task_template = "{0:<30}{1:<50}{2:<30}{3:<60}{4:<10}{5:<30}\n"
+        template = "{0:<50}{1:<30}{2:<80}{3:<10}{4:<30}\n"
+        sub_task_template = "{0:<30}{1:<50}{2:<30}{3:<80}{4:<10}{5:<30}\n"
         gap_template = "{0:<160}\n"
 
         out = template.format(self.task.uid, self.date, self.shortened_text, self.status, self.status_date)
 
         if len(self.sub_task_views) > 0:
-            out += gap_template.format(200 * gab_char)
+            out += gap_template.format(180 * gab_char)
 
         for sub_task_view in self.sub_task_views:
             out += sub_task_template.format("",
