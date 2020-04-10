@@ -47,7 +47,7 @@ def get_status(ctx, args, incomplete):
 def task(uid):
     found_task = task_service.get_task_by_id(uid)
     if found_task:
-        task_view = TaskView(found_task, None)
+        task_view = TaskView(found_task)
         click.echo(task_view.detail_view())
     else:
         click.echo("No Task found with uid {}".format(uid))
@@ -58,7 +58,7 @@ def task(uid):
 def edit_task(uid):
     found_task = task_service.get_task_by_id(uid)
     if found_task:
-        task_view = TaskView(found_task, None)
+        task_view = TaskView(found_task)
         altered_text = click.edit(task_view.detail_view())
         if altered_text:
             task_view.parse_and_alter(altered_text)

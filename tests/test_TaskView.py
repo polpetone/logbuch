@@ -25,7 +25,7 @@ class TestTaskView(TestCase):
 
     def test_alter_task(self):
         task = Task("foobar")
-        task_view = TaskView(task, 0)
+        task_view = TaskView(task)
         out = create_detail_view_string(task_view,
                                         "altered foobar",
                                         "02-04-2020 18:53:47",
@@ -44,7 +44,7 @@ class TestTaskView(TestCase):
         sub_task_0 = Task("foobar sub 0")
         sub_task_1 = Task("foobar sub 1")
         task.sub_tasks = [sub_task_0, sub_task_1]
-        task_view = TaskView(task, 0)
+        task_view = TaskView(task)
 
         out_task = create_detail_view_string(task_view,
                                              "altered foobar",

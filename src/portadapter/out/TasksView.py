@@ -5,10 +5,8 @@ class TasksView(object):
 
     def __init__(self, tasks):
         self.task_views = []
-        task_counter = 0
         for task in tasks:
-            task_counter += 1
-            self.task_views.append(TaskView(task, task_counter))
+            self.task_views.append(TaskView(task))
 
     def simple_table_view(self, gab_char=""):
         template = "{0:<30}{1:<80}{2:<10}{3:<30}\n"

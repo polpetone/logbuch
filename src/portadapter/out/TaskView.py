@@ -9,9 +9,8 @@ TASK_SEPARATOR = "######_TASK_######"
 
 class TaskView(object):
 
-    def __init__(self, task, select_number):
+    def __init__(self, task):
         self.task = task
-        self.select_number = select_number
         if task.date:
             self.date = task.date.strftime("%d-%m-%Y %H:%M:%S")
         else:
@@ -24,17 +23,10 @@ class TaskView(object):
         else:
             self.status_date = ""
         self.sub_task_views = []
-        sub_task_counter = 0
-        for sub_task in task.sub_tasks:
-            sub_task_counter += 1
-            self.sub_task_views.append(TaskView(sub_task, sub_task_counter))
-        self.notes = "\n".join(self.task.notes)
 
-    def get_sub_task_view_by_number(self, number):
-        result = [x for x in self.sub_task_views if x.select_number == number]
-        if len(result) > 0:
-            return result[0]
-        return None
+        for sub_task in task.sub_tasks:
+            self.sub_task_views.append(TaskView(sub_task))
+        self.notes = "\n".join(self.task.notes)
 
     def view_with_notes(self, gab_char=""):
         template = "{0:<30}{1:<80}{2:<10}{3:<30}\n"
