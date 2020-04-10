@@ -1,5 +1,5 @@
 import click
-from src.portadapter.cli import pass_environment
+from src.portadapter.cli import pass_environment, get_open_tasks
 from src.portadapter.out.TaskView import TaskView
 
 
