@@ -160,7 +160,7 @@ def tasks(status, from_date, query, all, show_uid):
     if show_uid:
         click.echo(tasks_view.simple_table_view_with_uid())
     else:
-        click.echo(tasks_view.simple_table_view())
+        click.echo(tasks_view.simple_table_view(gab_char='.'))
 
     click.echo("Found {} Tasks".format(len(tasks_view.task_views)))
 
