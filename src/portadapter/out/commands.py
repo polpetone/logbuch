@@ -125,19 +125,7 @@ def change_status_task(uid, status):
 
 
 @cli.command()
-@click.option("--uid", prompt="task id", help="Task id to change status for")
-@click.option("--status", prompt="status", help="OPEN, CANCELED, CLOSED")
-def change_status(uid, status):
-    task = task_service.get_task_by_id(uid)
-    if task:
-        task.change_status(status)
-        task_service.save_tasks()
-    else:
-        click.echo("No Task found with uid {}".format(uid))
-
-
-@cli.command()
-@click.option("--status", help="OPEN, CANCELED, FINISHED", default="OPEN")
+@click.option("--status", help="OPEN, CANCELED, FINISHED", "HOLD", default="OPEN")
 @click.option("--from_date", help="Date Format: 23-5-2019. Filter tasks by status date")
 @click.option("--query", help="Search Query")
 @click.option("--all/--not-all", default=False)
