@@ -1,6 +1,6 @@
 from unittest import TestCase
 from click.testing import CliRunner
-from src.portadapter.out.commands import tasks
+from src.portadapter.commands.cmd_tasks import tasks
 
 
 class TestCommands(TestCase):
