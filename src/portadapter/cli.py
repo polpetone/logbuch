@@ -56,8 +56,6 @@ def get_status(ctx, args, incomplete):
     return [s for s in status if incomplete in s[0]]
 
 
-
-
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 @pass_environment
@@ -132,9 +130,6 @@ def change_status_task(env, uid, status):
         env.task_service.save_tasks()
     else:
         click.echo("No Task found with uid {}".format(uid))
-
-
-
 
 
 @cli.command()
