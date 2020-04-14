@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='src',
+    name='logbuch',
     version='0.1',
     packages=find_packages(),
     include_package_data=True,
@@ -11,6 +11,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        logbuch=src.portadapter.out.commands:cli
+        logbuch=logbuch.portadapter.commands.cli:cli
     ''',
 )

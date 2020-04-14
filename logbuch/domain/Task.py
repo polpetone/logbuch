@@ -1,11 +1,11 @@
 import uuid
 from datetime import datetime
 import json
-from src.domain.TaskStatus import TaskStatus
-from src.portadapter.out.logger import init as init_logger
+from logbuch.domain.TaskStatus import TaskStatus
+from logbuch.portadapter.out.logger import init as init_logger
 
 # TODO: get file name automatic
-logger = init_logger("src.domain.Task")
+logger = init_logger("logbuch.domain.Task")
 
 
 class Task(object):

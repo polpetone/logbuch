@@ -1,7 +1,7 @@
 from unittest import TestCase
-from src.domain.Task import Task
-from src.portadapter.out.TaskView import TaskView
-from src.portadapter.out.TaskView import TASK_SEPARATOR
+from logbuch.domain.Task import Task
+from logbuch.portadapter.out.TaskView import TaskView
+from logbuch.portadapter.out.TaskView import TASK_SEPARATOR
 
 
 def create_detail_view_string(task_view, text, task_date, status, status_date):

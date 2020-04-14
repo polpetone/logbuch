@@ -1,8 +1,8 @@
 import jsonpickle
 
-from src.domain.Task import Task
-from src.service.Tasks import Tasks
-from src.portadapter.out.logger import init as init_logger
+from logbuch.domain.Task import Task
+from logbuch.service.Tasks import Tasks
+from logbuch.portadapter.out.logger import init as init_logger
 
 
 class TaskService:

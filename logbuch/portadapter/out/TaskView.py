@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from src.portadapter.out.logger import init as init_logger
+from logbuch.portadapter.out.logger import init as init_logger
 
-logger = init_logger("src.portadapter.domain.TaskView")
+logger = init_logger("logbuch.portadapter.domain.TaskView")
 
 TASK_SEPARATOR = "######_TASK_######"
 

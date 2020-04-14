@@ -1,4 +1,4 @@
-from src.portadapter.out.TaskView import TaskView
+from logbuch.portadapter.out.TaskView import TaskView
 
 
 class TasksView(object):
