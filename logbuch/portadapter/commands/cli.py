@@ -177,7 +177,7 @@ def change_status_task(env, uid, status):
 
 
 @cli.command()
-@click.option("--uid", prompt="task id", help="Task id for task to get deleted")
+@click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 @pass_environment
 def delete_task(env, uid):
     task = env.task_service.delete_task_by_id(uid)
