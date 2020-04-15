@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import yaml
+
 import click
 import os
 
@@ -17,7 +19,8 @@ class Environment(object):
     def __init__(self, home=None, debug=False):
         self.home = os.path.abspath(home or '.')
         self.debug = debug
-        conf = Conf(logbuch_path=os.path.expanduser('~') + "/.logbuch", task_repo_file_path="/data/current.json")
+
+        conf = Conf(logbuch_path=os.path.expanduser('~') + "/.logbuch")
         logger.debug("Initialize TaskService")
         self.task_service = TaskService(conf)
 
@@ -99,6 +102,7 @@ def tasks(env, status, from_date, query, all, show_uid):
         click.echo(tasks_view.simple_table_view(gab_char='.'))
 
     click.echo("Found {} Tasks".format(len(tasks_view.task_views)))
+
 
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
