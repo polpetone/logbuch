@@ -1,11 +1,9 @@
 from datetime import datetime
 
-import yaml
-
 import click
 import os
 
-from logbuch.conf import Conf
+from logbuch.config import Config
 from logbuch.domain.Task import Task
 from logbuch.portadapter.out.TaskView import TaskView
 from logbuch.portadapter.out.TasksView import TasksView
@@ -20,9 +18,9 @@ class Environment(object):
         self.home = os.path.abspath(home or '.')
         self.debug = debug
 
-        conf = Conf(logbuch_path=os.path.expanduser('~') + "/.logbuch")
+        config = Config(logbuch_path=os.path.expanduser('~') + "/.logbuch")
         logger.debug("Initialize TaskService")
-        self.task_service = TaskService(conf)
+        self.task_service = TaskService(config)
 
 
 pass_environment = click.make_pass_decorator(Environment, ensure=True)

@@ -21,7 +21,7 @@ def read_config(config_file):
     return config
 
 
-class Conf(object):
+class Config(object):
     def __init__(self, logbuch_path):
         create_config_if_not_exists()
         self.logbuch_path = logbuch_path
