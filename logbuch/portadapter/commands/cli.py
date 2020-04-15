@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import click
 import os
 
@@ -186,7 +188,7 @@ def delete_task(env, uid):
 
 
 @cli.command()
-@click.option("--text", prompt="Text", help="Text of the new Task")
+@click.argument("text", type=click.STRING)
 @pass_environment
 def add_task(env, text):
     env.task_service.create_task(text)
