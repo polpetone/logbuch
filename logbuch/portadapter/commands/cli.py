@@ -122,6 +122,7 @@ def edit_task(env, uid):
 @cli.command()
 @click.argument("uid", type=click.STRING, autocompletion=get_open_tasks)
 @click.option("--text", prompt="Text", help="Text of the new sub task")
+@click.argument("text", type=click.STRING) 
 @pass_environment
 def add_sub_task(env, uid, text):
     found_task = env.task_service.get_task_by_id(uid)
