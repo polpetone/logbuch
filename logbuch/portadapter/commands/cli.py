@@ -5,9 +5,11 @@ import os
 
 from logbuch.config import Config
 from logbuch.domain.Task import Task
+from logbuch.portadapter.out.AnalysisView import AnalysisView
 from logbuch.portadapter.out.TaskView import TaskView
 from logbuch.portadapter.out.TasksView import TasksView
 from logbuch.portadapter.out.logger import init as init_logger
+from logbuch.service.AnalysisService import AnalysisService
 from logbuch.service.TaskService import TaskService
 
 logger = init_logger("logbuch.portadapter.out.commands")
@@ -200,3 +202,21 @@ def add_task(env, text):
     found_tasks = env.task_service.filtered_tasks
     tasks_view = TasksView(found_tasks)
     click.echo(tasks_view.simple_table_view())
+
+
+@cli.command()
+@pass_environment
+def terms(env):
+    analysis_service = AnalysisService(env.task_service)
+    terms = analysis_service.get_most_used_terms()
+    analysis_view = AnalysisView(terms)
+    click.echo(analysis_view.view())
+
+
+
+
+
+
+
+
+
